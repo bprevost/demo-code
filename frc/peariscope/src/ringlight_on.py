@@ -13,7 +13,7 @@ if len(sys.argv) != 4:
 
 NUMPIXELS = 16
 pixels = neopixel.NeoPixel(board.D18, NUMPIXELS)
-red = int(sys.argv[1])
-grn = int(sys.argv[2])
-blu = int(sys.argv[3])
+red = int(round(float(sys.argv[1])))
+grn = int(round(float(sys.argv[2])))
+blu = int(round(float(sys.argv[3])))
 pixels.fill((red, grn, blu))

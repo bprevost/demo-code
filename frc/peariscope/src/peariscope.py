@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-sys.path.insert(0, '/home/pi/peariscope/src')
-
 import time
 import subprocess
 import json
@@ -34,14 +32,9 @@ DEFAULT_VALS = {
 
 def ringlight_on(red, grn, blu):
     print("Setting ringlights to", red, grn, blu)
-    script = 'peariscope/src/ringlight_on.py'
+    script = '/home/pi/demo-code/frc/peariscope/src/ringlight_on.py'
     command = 'sudo {} {} {} {} 2>/dev/null'.format(script, red, grn, blu)
     rc = subprocess.call(command, shell=True) # Run the script in the shell
-
-def get_temperature():
-    result = subprocess.check_output(['vcgencmd', 'measure_temp'])
-    temperature = float(result.decode('UTF-8')[5:][:-3])
-    return temperature
 
 def peariscope(camera, inst):
 
@@ -64,7 +57,7 @@ def peariscope(camera, inst):
     sink = inst.getVideo()
 
     # Preallocate space for new color images
-    input_img = np.zeros(shape=(camera_height, camera_width, 3), dtype=np.uint8)
+    color_img = np.zeros(shape=(camera_height, camera_width, 3), dtype=np.uint8)
 
     # Create output stream for sending processed images
     output_stream = inst.putVideo('Peariscope', camera_width, camera_height)
@@ -93,9 +86,6 @@ def peariscope(camera, inst):
     while True: # Forever loop
         start_time = current_time
 
-        # Publish the temperature of the pi
-        nt.putNumber('temperature', get_temperature())
-
         # Get configuration values for LED lights
         led_red = nt.getNumber('led_red', None)
         led_grn = nt.getNumber('led_grn', None)
@@ -115,31 +105,21 @@ def peariscope(camera, inst):
             ringlight_on(red, grn, blu)
 
         # Grab a frame from the camera and store it in the preallocated space
-        frame_time, input_img = sink.grabFrame(input_img)
+        frame_time, color_img = sink.grabFrame(color_img)
+        img_height, img_width = color_img.shape[:2]
 
         # If there is an error then notify the output and skip this iteration
         if frame_time == 0:
             output_stream.notifyError(sink.getError())
             continue
 
-        # Publish the image size
-        img_height, img_width = input_img.shape[:2]
-        nt.putNumber('image_height', img_height)
-        nt.putNumber('image_width', img_width)
-        img_center_x = int(img_width/2)
-        img_center_y = int(img_height/2)
-
         # Segment the image based on hue, saturation, and value ranges
-        hsv_img = cv2.cvtColor(input_img, cv2.COLOR_BGR2HSV)
+        hsv_img = cv2.cvtColor(color_img, cv2.COLOR_BGR2HSV)
         binary_img = cv2.inRange(hsv_img, (min_hue, min_sat, min_val), (max_hue, max_sat, max_val))
 
         # Closing (fill in any gaps)
         binary_img = cv2.dilate(binary_img, None, iterations=2)
         binary_img = cv2.erode(binary_img, None, iterations=2)
-
-        # Create an output image for display
-        output_img = np.zeros_like(input_img)
-        output_img[:] = BGR_BLUE
 
         # Find contours in the binary image
         _, contour_list, _ = cv2.findContours(binary_img, mode=cv2.RETR_EXTERNAL, method=cv2.CHAIN_APPROX_SIMPLE)
@@ -155,13 +135,13 @@ def peariscope(camera, inst):
         # For each contour of every object...
         for contour in contour_list:
 
-            # Color in the contour so we know it was seen
-            cv2.drawContours(output_img, [contour], 0, color=BGR_RED, thickness=-1)
-
             # Compute the area of the contour
             area = cv2.contourArea(contour)
             if area < 10:
                 continue # Immediately eliminate small contours
+
+            # Color in the contour so we know it was seen
+            cv2.drawContours(color_img, [contour], 0, color=BGR_RED, thickness=-1)
 
             # Compute the rotated rectangle surrounding the contour
             rect = cv2.minAreaRect(contour)
@@ -191,13 +171,13 @@ def peariscope(camera, inst):
                     area, rect_long, rect_short, rect_angle, ratio, fill))
 
                 # Color in the successful contour
-                cv2.drawContours(output_img, [contour], 0, color=BGR_GREEN, thickness=-1)
+                cv2.drawContours(color_img, [contour], 0, color=BGR_GREEN, thickness=-1)
 
                 # Draw rotated rectangle
-                cv2.drawContours(output_img, [np.int0(cv2.boxPoints(rect))], 0, BGR_YELLOW, 2)
+                cv2.drawContours(color_img, [np.int0(cv2.boxPoints(rect))], 0, BGR_YELLOW, 2)
 
                 # Draw a circle to mark the center
-                cv2.circle(output_img, center=(int(rect_x), int(rect_y)), radius=3, color=BGR_YELLOW, thickness=-1)
+                cv2.circle(color_img, center=(int(rect_x), int(rect_y)), radius=3, color=BGR_YELLOW, thickness=-1)
 
                 # Add to the lists of results
                 x_list.append(rect_x)
@@ -222,11 +202,11 @@ def peariscope(camera, inst):
         nt.putNumberArray('y_list_pct', y_list_pct)
 
         # Draw crosshairs on the image
-        cv2.line(output_img, (img_center_x, 0), (img_center_x, img_height-1), BGR_YELLOW, 1)
-        cv2.line(output_img, (0, img_center_y), (img_width-1, img_center_y), BGR_YELLOW, 1)
+        cv2.line(color_img, (img_width//2, 0), (img_width//2, img_height-1), BGR_YELLOW, 1)
+        cv2.line(color_img, (0, img_height//2), (img_width-1, img_height//2), BGR_YELLOW, 1)
 
         # Display the marked-up image on a separate output stream
-        output_stream.putFrame(output_img)
+        output_stream.putFrame(color_img)
 
         # Compute the elapsed time and FPS
         current_time = time.time()
