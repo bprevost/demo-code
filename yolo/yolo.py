@@ -1,33 +1,41 @@
 #!/usr/bin/env python3
 
+import os
+import os.path
 import time
 import numpy as np
 import cv2
 
 class Yolo(object):
 
-    labelsPath = 'coco.names'
-    weightsPath = 'yolov3.weights'
-    configPath = 'yolov3.cfg'
+    labels_path = 'coco.names'
+    weights_path = 'yolov3.weights'
+    config_path = 'yolov3.cfg'
     confidence = 0.5 # Minimum probability to filter out detections
     threshold = 0.3 # Threshold when applying non-maxima suppression
 
     def __init__(self):
+
+        if not os.path.isfile(self.weights_path):
+            print("Assembling {} file...".format(self.weights_path))
+            os.system('cat {0}.* > {0}'.format(self.weights_path))
+
         # Load the COCO class labels that the YOLO model was trained on
-        self.labels = open(self.labelsPath).read().strip().split('\n')
+        self.labels = open(self.labels_path).read().strip().split('\n')
 
         # Initialize a list of colors to represent each possible class label
         np.random.seed(42)
         self.colors = np.random.randint(0, 255, size=(len(self.labels), 3), dtype='uint8')
 
         # Load the YOLO object detector trained on the COCO dataset (80 classes)
-        self.net = cv2.dnn.readNetFromDarknet(self.configPath, self.weightsPath)
+        self.net = cv2.dnn.readNetFromDarknet(self.config_path, self.weights_path)
 
         # Determine the output layer names that are needed from YOLO
         self.ln = self.net.getLayerNames()
         self.ln = [self.ln[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
 
     def run(self, image):
+
         # Construct a blob from the image and perform a forward pass of the object detector
         blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
         self.net.setInput(blob)
