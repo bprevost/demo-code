@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<robot name="demo">
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+  <material name="green">
+    <color rgba="0 1 0 1"/>
+  </material>
+  <material name="blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="1.0" radius="0.5"/>
+      </geometry>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <material name="red"/>
+    </visual>
+  </link>
+
+  <link name="neck_link">
+    <visual>
+      <geometry>
+        <cylinder length="1.0" radius="0.4"/>
+      </geometry>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <material name="green"/>
+    </visual>
+  </link>
+
+  <joint name="neck_joint" type="prismatic">
+    <parent link="base_link"/>
+    <child link="neck_link"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0" upper="1" velocity="0.5"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="head_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.5"/>
+      </geometry>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <joint name="head_swivel" type="continuous">
+    <parent link="neck_link"/>
+    <child link="head_link"/>
+    <axis xyz="0 0 1"/>
+    <origin xyz="0 0 1" rpy="0 0 0"/>
+  </joint>
+
+  <link name="eyeball_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.04"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <joint name="eyeball_joint" type="fixed">
+    <parent link="head_link"/>
+    <child link="eyeball_link"/>
+    <origin xyz="0.5 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+</robot>

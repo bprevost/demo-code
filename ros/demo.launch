@@ -1,8 +1,16 @@
 <launch>
+
     <arg name="model" default="demo.urdf"/>
+    <arg name="gui" default="true"/>
 
     <param name="robot_description" command="$(find xacro)/xacro $(arg model)"/>
 
-    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+    <node if="$(arg gui)" name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+
+    <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+      <rosparam param="source_list">["zoey_joint_states"]</rosparam>
+    </node>
+
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
 </launch>
