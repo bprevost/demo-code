@@ -31,4 +31,4 @@ cv2.putText(orig, "Label: {}".format(labels[np.argmax(scores)]),
 
 # Display the input image
 cv2.imshow("Image", orig)
-cv2.waitKey(10000)
+cv2.waitKey(5000)
