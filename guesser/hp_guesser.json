@@ -1,8 +1,28 @@
 {
+    "Does it have red hair?": {
+        "no": "Is it a professor at Hogwarts?", 
+        "yes": "Is it Ron Weasley?"
+    }, 
+    "Is it Draco Malfoy?": 0, 
+    "Is it Dudley Dursley?": 0, 
+    "Is it Harry Potter?": 0, 
+    "Is it Hermione Granger?": 0, 
+    "Is it Ron Weasley?": 0, 
+    "Is it Severus Snape?": 0, 
+    "Is it a girl?": {
+        "no": "Does it have red hair?", 
+        "yes": "Is it Hermione Granger?"
+    }, 
+    "Is it a member of Slytherin house?": {
+        "no": "Is it Harry Potter?", 
+        "yes": "Is it Draco Malfoy?"
+    }, 
+    "Is it a professor at Hogwarts?": {
+        "no": "Is it a member of Slytherin house?", 
+        "yes": "Is it Severus Snape?"
+    }, 
     "Is it magical?": {
-        "yes": "Is it Harry Potter?",
-        "no": "Is it Dudley Dursley?"
-    },
-    "Is it Harry Potter?": 0,
-    "Is it Dudley Dursley?": 0
+        "no": "Is it Dudley Dursley?", 
+        "yes": "Is it a girl?"
+    }
 }
