@@ -1,0 +1,8 @@
+{
+    "Is it magical?": {
+        "yes": "Is it Harry Potter?",
+        "no": "Is it Dudley Dursley?"
+    },
+    "Is it Harry Potter?": 0,
+    "Is it Dudley Dursley?": 0
+}
