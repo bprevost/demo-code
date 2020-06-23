@@ -30,7 +30,7 @@ def convolve(image, K):
     output = (output * 255).astype("uint8")
     return output
 
-IMAGEFILE = "./images/beagle.png"
+IMAGEFILE = "../images/beagle.png"
 
 # Construct averaging kernels for smoothing an image
 smallBlur = np.ones((7, 7), dtype="float") * (1.0 / (7 * 7))
