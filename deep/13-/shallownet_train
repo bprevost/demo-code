@@ -54,6 +54,9 @@ model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy
 # Train the network
 H = model.fit(trainX, trainY, validation_data=(testX, testY), batch_size=32, epochs=100, verbose=1)
 
+# Save the network to disk
+model.save("shallownet_weights.hdf5")
+
 # Evalute the performance of the network
 predictions = model.predict(testX, batch_size=32)
 print(classification_report(
