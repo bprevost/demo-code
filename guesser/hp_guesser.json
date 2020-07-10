@@ -1,19 +1,31 @@
 {
+    "Can it see Thestrals?": {
+        "no": "Is it Hermione Granger?", 
+        "yes": "Is it Luna Lovegood?"
+    }, 
     "Does it have a long white beard?": {
         "no": "Is it Severus Snape?", 
         "yes": "Is it Albus Dumbledore?"
     }, 
     "Does it have red hair?": {
         "no": "Is it a professor at Hogwarts?", 
-        "yes": "Is it Ron Weasley?"
+        "yes": "Is it a twin?"
+    }, 
+    "Does it survive all 7 books?": {
+        "no": "Is it Fred Weasley?", 
+        "yes": "Is it George Weasley?"
     }, 
     "Is it Albus Dumbledore?": 0, 
     "Is it Bellatrix Lestrange?": 0, 
     "Is it Draco Malfoy?": 0, 
     "Is it Dudley Dursley?": 0, 
+    "Is it Fred Weasley?": 0, 
+    "Is it George Weasley?": 0, 
     "Is it Harry Potter?": 0, 
     "Is it Hermione Granger?": 0, 
     "Is it Lord Voldemort?": 0, 
+    "Is it Luna Lovegood?": 0, 
+    "Is it Peter Pettigrew?": 0, 
     "Is it Ron Weasley?": 0, 
     "Is it Severus Snape?": 0, 
     "Is it a girl?": {
@@ -28,12 +40,20 @@
         "no": "Is it a member of Slytherin house?", 
         "yes": "Does it have a long white beard?"
     }, 
+    "Is it a twin?": {
+        "no": "Is it Ron Weasley?", 
+        "yes": "Does it survive all 7 books?"
+    }, 
+    "Is it an Animagus?": {
+        "no": "Is it Harry Potter?", 
+        "yes": "Is it Peter Pettigrew?"
+    }, 
     "Is it magical?": {
         "no": "Is it Dudley Dursley?", 
         "yes": "Is it a girl?"
     }, 
     "Is it non-human?": {
-        "no": "Is it Harry Potter?", 
+        "no": "Is it an Animagus?", 
         "yes": "Is it the mountain troll?"
     }, 
     "Is it the leader of the Death Eaters?": {
@@ -42,7 +62,7 @@
     }, 
     "Is it the mountain troll?": 0, 
     "is it a member of the Death Eaters?": {
-        "no": "Is it Hermione Granger?", 
+        "no": "Can it see Thestrals?", 
         "yes": "Is it Bellatrix Lestrange?"
     }
 }
