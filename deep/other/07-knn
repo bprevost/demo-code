@@ -6,9 +6,10 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+
+from imutils import paths
 from simplepreprocessor import SimplePreprocessor
 from simpledatasetloader import SimpleDatasetLoader
-from imutils import paths
 
 DATASET = os.path.join(os.getenv('HOME'), 'books/DL4CV/SB_Code/datasets/animals')
 NEIGHBORS = 1 # Number of nearest neighbors (k) for classification
