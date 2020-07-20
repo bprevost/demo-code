@@ -12,7 +12,6 @@ class LeNet:
 
         # Initialize the model
         model = Sequential()
-        inputShape = (height, width, depth)
 
         # Channel order
         inputShape = (height, width, depth) # Channels last

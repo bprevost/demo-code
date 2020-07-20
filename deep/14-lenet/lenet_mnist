@@ -14,7 +14,7 @@ from tensorflow.keras.datasets import mnist
 from tensorflow.keras import backend as K
 from lenet import LeNet
 
-# Grab the MNIST dataset
+# Load the MNIST dataset
 ((trainData, trainLabels), (testData, testLabels)) = mnist.load_data()
 
 if K.image_data_format() == "channels_first":
@@ -31,9 +31,9 @@ trainData = trainData.astype("float32") / 255.0
 testData = testData.astype("float32") / 255.0
 
 # Convert the labels from integers to one-hot vectors
-le = LabelBinarizer()
-trainLabels = le.fit_transform(trainLabels)
-testLabels = le.transform(testLabels)
+lb = LabelBinarizer()
+trainLabels = lb.fit_transform(trainLabels)
+testLabels = lb.transform(testLabels)
 
 # Initialize the optimizer and model
 opt = SGD(lr=0.01) # Learning rate
@@ -49,7 +49,7 @@ predictions = model.predict(testData, batch_size=128)
 print(classification_report(
     testLabels.argmax(axis=1),
     predictions.argmax(axis=1),
-    target_names=[str(x) for x in le.classes_]))
+    target_names=[str(x) for x in lb.classes_]))
 
 # Plot the training loss and accuracy
 plt.style.use("ggplot")
