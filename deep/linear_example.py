@@ -14,7 +14,7 @@ W = np.random.randn(3, 3072)
 b = np.random.randn(3)
 
 # Load image, resize, and flatten into feature vector
-filename = '../images/beagle.png'
+filename = 'images/beagle.png'
 orig = cv2.imread(filename)
 image = cv2.resize(orig, (32, 32)).flatten()
 
