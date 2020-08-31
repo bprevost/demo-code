@@ -25,7 +25,6 @@ def step_decay(epoch):
 # Load the CIFAR-10 dataset
 ((trainX, trainY), (testX, testY)) = cifar10.load_data()
 
-
 # Scale data (image pixel intensities) to the range of [0, 1]
 trainX = trainX.astype("float") / 255.0
 testX = testX.astype("float") / 255.0
