@@ -64,7 +64,7 @@ model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy
 H = model.fit(trainX, trainY, validation_data=(testX, testY),
     batch_size=32, epochs=15, verbose=1)
 
-# save the model to disk
+# Save the model to disk
 model.save('lenet.hdf5')
 
 # Evaluate the network
@@ -72,7 +72,7 @@ predictions = model.predict(testX, batch_size=32)
 print(classification_report(testY.argmax(axis=1),
     predictions.argmax(axis=1), target_names=lb.classes_))
 
-# Plot the training + testing loss and accuracy
+# Plot the loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
 plt.plot(np.arange(0, 15), H.history["loss"], label="train_loss")
